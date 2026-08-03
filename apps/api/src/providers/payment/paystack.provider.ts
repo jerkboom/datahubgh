@@ -17,12 +17,15 @@ export class PaystackProvider implements PaymentProvider {
   }
 
   async initializePayment(amount: number, reference: string, customerDetails: any): Promise<PaymentResponse> {
+    const startTime = Date.now();
     try {
       const response = await axios.post(
         `${this.baseUrl}/transaction/initialize`,
         {
           amount: amount * 100, // Paystack works in kobo/pesewas
           email: customerDetails.email || 'guest@datahubgh.com',
+          currency: 'GHS',
+          channels: ['mobile_money'],
           reference,
           metadata: customerDetails.metadata || {},
           callback_url: `${this.configService.get<string>('NEXT_PUBLIC_APP_URL') || this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000'}/success`,
@@ -35,6 +38,7 @@ export class PaystackProvider implements PaymentProvider {
         }
       );
 
+      this.logger.log(`Paystack init took ${Date.now() - startTime}ms for ref ${reference}`);
       return {
         success: true,
         reference,
@@ -84,10 +88,10 @@ export class PaystackProvider implements PaymentProvider {
     }
   }
 
-  verifyWebhook(signature: string, payload: any): boolean {
+  verifyWebhook(signature: string, rawBody: string): boolean {
     const hash = crypto
       .createHmac('sha512', this.secretKey)
-      .update(JSON.stringify(payload))
+      .update(rawBody)
       .digest('hex');
     
     return hash === signature;

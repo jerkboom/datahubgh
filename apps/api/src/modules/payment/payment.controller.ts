@@ -75,7 +75,12 @@ export class PaymentController {
 
   @Post('paystack/webhook')
   @HttpCode(200)
-  async webhook(@Headers('x-paystack-signature') signature: string, @Body() payload: any) {
-    return this.paymentService.handleWebhook(signature, payload);
+  async handleWebhook(
+    @Headers('x-paystack-signature') signature: string,
+    @Body() payload: any,
+    @Request() req: any
+  ) {
+    const rawBody = req.rawBody ? req.rawBody.toString('utf8') : JSON.stringify(payload);
+    return this.paymentService.handleWebhook(signature, payload, rawBody);
   }
 }

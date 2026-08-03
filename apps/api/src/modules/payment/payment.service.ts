@@ -80,8 +80,8 @@ export class PaymentService {
     };
   }
 
-  async handleWebhook(signature: string, payload: any) {
-    const isValid = this.paymentProvider.verifyWebhook(signature, payload);
+  async handleWebhook(signature: string, payload: any, rawBody: string) {
+    const isValid = this.paymentProvider.verifyWebhook(signature, rawBody);
     if (!isValid) throw new BadRequestException('Invalid signature');
 
     if (payload.event === 'charge.success') {
