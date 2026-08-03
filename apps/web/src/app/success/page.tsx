@@ -3,7 +3,7 @@
 import { Suspense, useEffect, useState, useRef } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { CheckCircle, XCircle, Loader2, ArrowRight, Download, Clock, MapPin, ShieldAlert, Check } from "lucide-react";
-import Link from "next/link";
+import { API_URL } from "@/lib/api";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 
@@ -24,7 +24,7 @@ function SuccessContent() {
     if (!reference) return;
     
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/v1/payments/paystack/verify/${reference}`, {
+      const res = await fetch(`${API_URL}/api/v1/payments/paystack/verify/${reference}`, {
         cache: 'no-store'
       });
       

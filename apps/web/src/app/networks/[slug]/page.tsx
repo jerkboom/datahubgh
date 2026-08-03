@@ -11,6 +11,7 @@ import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { API_URL } from "@/lib/api";
 import { mockNetworks, mockBundles, Bundle } from "@/lib/mock-data";
 
 const checkoutSchema = z.object({
@@ -72,7 +73,7 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
     if (!selectedBundle) return;
     setIsProcessing(true);
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/v1/payments/paystack/initialize`, {
+      const response = await fetch(`${API_URL}/api/v1/payments/paystack/initialize`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

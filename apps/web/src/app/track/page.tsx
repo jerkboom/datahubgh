@@ -7,6 +7,7 @@ import {
   MapPin, Clock, Smartphone, CreditCard, ReceiptText,
   Search, AlertCircle, Copy, Home, LifeBuoy
 } from "lucide-react";
+import { API_URL } from "@/lib/api";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
@@ -26,7 +27,7 @@ function TrackOrderContent() {
     if (!isPolling) setStatus("loading");
     
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000"}/api/v1/orders/track/${query}`, {
+      const res = await fetch(`${API_URL}/api/v1/orders/track/${query}`, {
         cache: 'no-store'
       });
       
