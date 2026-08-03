@@ -25,7 +25,7 @@ export class PaystackProvider implements PaymentProvider {
           email: customerDetails.email || 'guest@datahubgh.com',
           reference,
           metadata: customerDetails.metadata || {},
-          callback_url: `${this.configService.get<string>('NEXT_PUBLIC_APP_URL', 'http://localhost:3000')}/success`,
+          callback_url: `${this.configService.get<string>('NEXT_PUBLIC_APP_URL') || this.configService.get<string>('FRONTEND_URL') || 'http://localhost:3000'}/success`,
         },
         {
           headers: {
