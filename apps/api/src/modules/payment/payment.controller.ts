@@ -54,7 +54,8 @@ export class PaymentController {
     }
     
     // 2. Fallback to generating unique email from phone number
-    if (!email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!email || !emailRegex.test(email)) {
       const phone = body.recipientPhone || '';
       const normalizedPhone = normalizePhone(phone);
       email = normalizedPhone ? `${normalizedPhone}@datahubgh.com` : 'guest@datahubgh.com';

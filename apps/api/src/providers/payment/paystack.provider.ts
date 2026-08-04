@@ -20,12 +20,14 @@ export class PaystackProvider implements PaymentProvider {
 
   async initializePayment(amount: number, reference: string, customerDetails: any): Promise<PaymentResponse> {
     const startTime = Date.now();
+    const email = customerDetails.email || 'guest@datahubgh.com';
+    this.logger.log(`EMAIL SENT TO PAYSTACK: ${email}`);
     try {
       const response = await axios.post(
         `${this.baseUrl}/transaction/initialize`,
         {
           amount: amount * 100, // Paystack works in kobo/pesewas
-          email: customerDetails.email || 'guest@datahubgh.com',
+          email,
           currency: 'GHS',
           channels: ['mobile_money'],
           reference,
