@@ -107,6 +107,10 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
         const handler = (window as any).PaystackPop.setup({
           key: publicKey,
           email: email,
+          amount: Math.round(currentPrice(selectedBundle) * 100),
+          ref: reference,
+          currency: "GHS",
+          channels: ["mobile_money"],
           access_code: accessCode,
           callback: (transaction: any) => {
             window.location.href = `/success?trxref=${reference || transaction.reference}&reference=${reference || transaction.reference}`;
