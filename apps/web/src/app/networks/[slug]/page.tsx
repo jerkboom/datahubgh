@@ -444,6 +444,11 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
                       </>
                     )}
                   </Button>
+                  {isProcessing && (
+                    <p className="text-[11px] text-muted-foreground text-center mt-3 animate-pulse leading-normal">
+                      🔒 Securing payment. You will receive an OTP or USSD prompt on your phone. Please keep this window open until completed.
+                    </p>
+                  )}
                 </div>
               </motion.div>
             </div>
