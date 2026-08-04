@@ -6,6 +6,7 @@ export interface PaymentResponse {
   authorizationUrl?: string;
   accessCode?: string;
   publicKey?: string;
+  email?: string;
   status: PaymentStatus;
   message: string;
   amount?: number;

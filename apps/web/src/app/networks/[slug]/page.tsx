@@ -99,12 +99,14 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
 
       const accessCode = result?.data?.accessCode || result?.accessCode;
       const publicKey = result?.data?.publicKey || result?.publicKey;
+      const email = result?.data?.email || result?.email;
       const reference = result?.data?.reference || result?.reference;
       const checkoutUrl = result?.data?.authorizationUrl || result?.authorizationUrl || result?.checkout_url;
 
       if (accessCode && publicKey && (window as any).PaystackPop) {
         const handler = (window as any).PaystackPop.setup({
           key: publicKey,
+          email: email,
           access_code: accessCode,
           callback: (transaction: any) => {
             window.location.href = `/success?trxref=${reference || transaction.reference}&reference=${reference || transaction.reference}`;

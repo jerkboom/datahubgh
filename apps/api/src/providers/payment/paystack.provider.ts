@@ -49,6 +49,7 @@ export class PaystackProvider implements PaymentProvider {
         authorizationUrl: response.data.data.authorization_url,
         accessCode: response.data.data.access_code,
         publicKey: this.publicKey,
+        email,
         status: PaymentStatus.PENDING,
         message: 'Payment initialized successfully',
       };
