@@ -236,7 +236,7 @@ export default function ContactPage() {
                   <h3 className="text-2xl font-extrabold mb-2">Need an instant reply?</h3>
                   <p className="text-green-50 mb-6">Chat with our support team directly on WhatsApp for real-time assistance.</p>
                   <Button asChild size="lg" className="w-full sm:w-auto bg-white text-green-700 hover:bg-green-50 font-bold h-14 px-8 rounded-xl">
-                    <a href="https://wa.me/233240000000" target="_blank" rel="noreferrer">
+                    <a href="https://wa.me/233245726892" target="_blank" rel="noreferrer">
                       Chat on WhatsApp <MessageCircle className="w-5 h-5 ml-2" />
                     </a>
                   </Button>
