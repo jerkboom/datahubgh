@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Script from "next/script";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -96,12 +97,27 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
         return;
       }
 
+      const accessCode = result?.data?.accessCode || result?.accessCode;
+      const publicKey = result?.data?.publicKey || result?.publicKey;
+      const reference = result?.data?.reference || result?.reference;
       const checkoutUrl = result?.data?.authorizationUrl || result?.authorizationUrl || result?.checkout_url;
 
-      if (checkoutUrl) {
+      if (accessCode && publicKey && (window as any).PaystackPop) {
+        const paystack = new (window as any).PaystackPop();
+        paystack.newTransaction({
+          key: publicKey,
+          access_code: accessCode,
+          onSuccess: (transaction: any) => {
+            window.location.href = `/success?trxref=${reference || transaction.reference}&reference=${reference || transaction.reference}`;
+          },
+          onCancel: () => {
+            setIsProcessing(false);
+          }
+        });
+      } else if (checkoutUrl) {
         window.location.href = checkoutUrl;
       } else {
-        alert("Payment gateway did not return a valid checkout URL.");
+        alert("Payment gateway did not return a valid checkout configuration.");
         setIsProcessing(false);
       }
     } catch (error: any) {
@@ -116,6 +132,7 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
 
   return (
     <div className="min-h-screen bg-muted/30 flex flex-col">
+      <Script src="https://js.paystack.co/v1/inline.js" strategy="afterInteractive" />
       <Navbar />
 
       <main className="flex-1 pb-24">

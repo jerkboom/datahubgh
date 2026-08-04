@@ -4,6 +4,8 @@ export interface PaymentResponse {
   success: boolean;
   reference: string;
   authorizationUrl?: string;
+  accessCode?: string;
+  publicKey?: string;
   status: PaymentStatus;
   message: string;
   amount?: number;

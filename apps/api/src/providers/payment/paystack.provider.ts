@@ -9,11 +9,13 @@ import * as crypto from 'crypto';
 @Injectable()
 export class PaystackProvider implements PaymentProvider {
   private readonly secretKey: string;
+  private readonly publicKey: string;
   private readonly baseUrl = 'https://api.paystack.co';
   private readonly logger = new Logger(PaystackProvider.name);
 
   constructor(private readonly configService: ConfigService) {
     this.secretKey = this.configService.get<string>('PAYSTACK_SECRET_KEY') || '';
+    this.publicKey = this.configService.get<string>('PAYSTACK_PUBLIC_KEY') || '';
   }
 
   async initializePayment(amount: number, reference: string, customerDetails: any): Promise<PaymentResponse> {
@@ -43,6 +45,8 @@ export class PaystackProvider implements PaymentProvider {
         success: true,
         reference,
         authorizationUrl: response.data.data.authorization_url,
+        accessCode: response.data.data.access_code,
+        publicKey: this.publicKey,
         status: PaymentStatus.PENDING,
         message: 'Payment initialized successfully',
       };
