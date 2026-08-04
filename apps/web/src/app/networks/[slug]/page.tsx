@@ -103,17 +103,17 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
       const checkoutUrl = result?.data?.authorizationUrl || result?.authorizationUrl || result?.checkout_url;
 
       if (accessCode && publicKey && (window as any).PaystackPop) {
-        const paystack = new (window as any).PaystackPop();
-        paystack.newTransaction({
+        const handler = (window as any).PaystackPop.setup({
           key: publicKey,
           access_code: accessCode,
-          onSuccess: (transaction: any) => {
+          callback: (transaction: any) => {
             window.location.href = `/success?trxref=${reference || transaction.reference}&reference=${reference || transaction.reference}`;
           },
-          onCancel: () => {
+          onClose: () => {
             setIsProcessing(false);
           }
         });
+        handler.openIframe();
       } else if (checkoutUrl) {
         window.location.href = checkoutUrl;
       } else {
