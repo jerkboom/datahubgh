@@ -68,17 +68,17 @@ export const mockBundles: Bundle[] = [
     "validity": "Non-Expiry",
     "name": "MTN 8GB",
     "size": "8GB",
-    "standardPrice": 20.66,
-    "instantPrice": 25.66,
+    "standardPrice": 22.00,
+    "instantPrice": 27.00,
     "deliveryOptions": [
       {
         "type": "standard",
-        "price": 20.66,
+        "price": 22.00,
         "eta": "Few minutes"
       },
       {
         "type": "instant",
-        "price": 25.66,
+        "price": 27.00,
         "eta": "10–60 seconds",
         "recommended": true
       }
@@ -94,17 +94,17 @@ export const mockBundles: Bundle[] = [
     "validity": "Non-Expiry",
     "name": "MTN 10GB",
     "size": "10GB",
-    "standardPrice": 23.55,
-    "instantPrice": 28.55,
+    "standardPrice": 24.50,
+    "instantPrice": 29.50,
     "deliveryOptions": [
       {
         "type": "standard",
-        "price": 23.55,
+        "price": 24.50,
         "eta": "Few minutes"
       },
       {
         "type": "instant",
-        "price": 28.55,
+        "price": 29.50,
         "eta": "10–60 seconds",
         "recommended": true
       }
@@ -2122,6 +2122,6 @@ export const mockOrder = {
   status: "SUCCESS",
   product: "MTN 10GB",
   recipientPhone: "024XXXXXXX",
-  amount: 28.55,
+  amount: 29.50,
   date: new Date().toISOString(),
 };

@@ -6,9 +6,9 @@ Non-Expiry
 4GB
 20.00 / 25.00
 8GB
-20.66 / 25.66
+22.00 / 27.00
 10GB
-23.55 / 28.55
+24.50 / 29.50
 14GB
 27.33 / 32.33
 17GB
@@ -277,7 +277,7 @@ export const mockOrder = {
   status: "SUCCESS",
   product: "MTN 10GB",
   recipientPhone: "024XXXXXXX",
-  amount: 28.55,
+  amount: 29.50,
   date: new Date().toISOString(),
 };
 `;
