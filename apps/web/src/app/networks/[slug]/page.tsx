@@ -7,7 +7,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { motion, AnimatePresence } from "framer-motion";
-import { ChevronLeft, Zap, ShieldCheck, CheckCircle2, Clock, X } from "lucide-react";
+import { ChevronLeft, Zap, ShieldCheck, CheckCircle2, Clock, X, Info } from "lucide-react";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
 import { Button } from "@/components/ui/button";
@@ -37,6 +37,9 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
   const [deliveryMode, setDeliveryMode] = useState<"standard" | "instant">("instant");
   const [isProcessing, setIsProcessing] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isPrePayModalOpen, setIsPrePayModalOpen] = useState(false);
+  const [checkoutFormData, setCheckoutFormData] = useState<CheckoutForm | null>(null);
+  const [dontShowAgain, setDontShowAgain] = useState(false);
 
   const { register, handleSubmit, watch, formState: { errors, isDirty } } = useForm<CheckoutForm>({
     resolver: zodResolver(checkoutSchema),
@@ -48,13 +51,17 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
   // Handle ESC to close
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && isModalOpen) {
-        handleCloseModal();
+      if (e.key === "Escape") {
+        if (isPrePayModalOpen) {
+          setIsPrePayModalOpen(false);
+        } else if (isModalOpen) {
+          handleCloseModal();
+        }
       }
     };
     window.addEventListener("keydown", handleEsc);
     return () => window.removeEventListener("keydown", handleEsc);
-  }, [isModalOpen, isDirty]);
+  }, [isModalOpen, isPrePayModalOpen, isDirty]);
 
   if (!network) {
     return <div className="p-8 text-center">Network not found.</div>;
@@ -72,6 +79,18 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
 
   const onSubmit = async (data: CheckoutForm) => {
     if (!selectedBundle) return;
+    const skipModal = localStorage.getItem("skipPrePayModal") === "true";
+    if (skipModal) {
+      await proceedToPayment(data);
+    } else {
+      setCheckoutFormData(data);
+      setIsPrePayModalOpen(true);
+    }
+  };
+
+  const proceedToPayment = async (data: CheckoutForm | null) => {
+    if (!selectedBundle || !data) return;
+    setIsPrePayModalOpen(false);
     setIsProcessing(true);
     try {
       const response = await fetch(`${API_URL}/api/v1/payments/paystack/initialize`, {
@@ -132,6 +151,7 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
       setIsProcessing(false);
     }
   };
+
 
   const currentPrice = (bundle: Bundle) => deliveryMode === "instant" ? bundle.instantPrice : bundle.standardPrice;
   const serviceFee = 0.00; // Free
@@ -449,6 +469,137 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
                       🔒 Securing payment. You will receive an OTP or USSD prompt on your phone. Please keep this window open until completed.
                     </p>
                   )}
+                </div>
+              </motion.div>
+            </div>
+          </>
+        )}
+      </AnimatePresence>
+
+      {/* Pre-Payment Information Modal */}
+      <AnimatePresence>
+        {isPrePayModalOpen && checkoutFormData && (
+          <>
+            <motion.div 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50"
+              onClick={() => setIsPrePayModalOpen(false)}
+              aria-hidden="true"
+            />
+            
+            <div className="fixed inset-0 z-55 flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none">
+              <motion.div 
+                initial={{ opacity: 0, scale: 0.95, y: 50 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 50 }}
+                transition={{ type: "spring", damping: 25, stiffness: 300 }}
+                className="w-full sm:w-[520px] max-h-[90vh] overflow-y-auto bg-card rounded-t-3xl sm:rounded-3xl shadow-2xl pointer-events-auto flex flex-col border border-border"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="prepay-modal-title"
+              >
+                {/* Header */}
+                <div className="p-6 border-b border-border flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
+                    <Info className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h2 id="prepay-modal-title" className="text-lg font-bold text-foreground">
+                      Before You Continue
+                    </h2>
+                    <p className="text-xs text-muted-foreground">Mobile Money network advisory</p>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-6 space-y-5 text-sm">
+                  {/* MTN */}
+                  <div className="p-4 rounded-xl bg-muted/40 border border-border/50">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
+                      <span className="font-bold text-foreground">MTN Mobile Money</span>
+                    </div>
+                    <ul className="list-disc pl-5 space-y-1 text-xs text-muted-foreground">
+                      <li>Your payment prompt usually arrives within a few seconds.</li>
+                      <li>If it doesn't appear immediately, please wait a moment before trying again.</li>
+                    </ul>
+                  </div>
+
+                  {/* Telecel */}
+                  <div className="p-4 rounded-xl bg-muted/40 border border-border/50">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse" />
+                      <span className="font-bold text-foreground">Telecel Cash</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mb-2 leading-relaxed">
+                      Paystack has informed us that some Telecel customers may experience temporary delays in receiving their payment OTP via SMS.
+                    </p>
+                    <div className="text-xs font-semibold text-foreground mb-1">If your OTP doesn't arrive within 30–60 seconds:</div>
+                    <ul className="list-disc pl-5 space-y-1 text-[11px] text-muted-foreground">
+                      <li>Please wait a little longer.</li>
+                      <li>Tap <strong className="text-foreground">Resend</strong> on the Paystack checkout.</li>
+                      <li>Select <strong className="text-foreground">WhatsApp</strong> to receive your OTP faster.</li>
+                    </ul>
+                  </div>
+
+                  {/* AirtelTigo */}
+                  <div className="p-4 rounded-xl bg-muted/40 border border-border/50">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse" />
+                      <span className="font-bold text-foreground">AirtelTigo Money</span>
+                    </div>
+                    <p className="text-xs text-muted-foreground mb-2 leading-relaxed">
+                      Some AirtelTigo customers may also experience temporary SMS OTP delays.
+                    </p>
+                    <div className="text-xs font-semibold text-foreground mb-1">If your OTP doesn't arrive within 30–60 seconds:</div>
+                    <ul className="list-disc pl-5 space-y-1 text-[11px] text-muted-foreground">
+                      <li>Wait a little longer.</li>
+                      <li>Tap <strong className="text-foreground">Resend</strong> on the Paystack checkout.</li>
+                      <li>Choose <strong className="text-foreground">WhatsApp</strong> to receive your OTP faster.</li>
+                    </ul>
+                  </div>
+
+                  {/* Footer note */}
+                  <p className="text-[11px] text-muted-foreground text-center leading-relaxed">
+                    Payments are securely processed by <strong className="text-foreground">Paystack</strong>. We do not store your Mobile Money PIN or payment credentials.
+                  </p>
+
+                  {/* Don't show again checkbox */}
+                  <label className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/30 cursor-pointer select-none border border-transparent hover:border-border transition-all">
+                    <input 
+                      type="checkbox" 
+                      checked={dontShowAgain}
+                      onChange={(e) => setDontShowAgain(e.target.checked)}
+                      className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
+                    />
+                    <span className="text-xs font-medium text-muted-foreground">
+                      Don't show this message again
+                    </span>
+                  </label>
+                </div>
+
+                {/* Footer Buttons */}
+                <div className="p-5 border-t border-border bg-card/50 flex flex-col-reverse sm:flex-row gap-3">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => setIsPrePayModalOpen(false)}
+                    className="flex-1 h-12 rounded-xl text-sm font-semibold"
+                  >
+                    Cancel
+                  </Button>
+                  <Button 
+                    onClick={() => {
+                      if (dontShowAgain) {
+                        localStorage.setItem("skipPrePayModal", "true");
+                      }
+                      proceedToPayment(checkoutFormData);
+                    }}
+                    className="flex-1 h-12 rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all"
+                  >
+                    Continue to Secure Checkout
+                  </Button>
                 </div>
               </motion.div>
             </div>
