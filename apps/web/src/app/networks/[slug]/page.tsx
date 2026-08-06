@@ -528,27 +528,29 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
 
                 {/* Content */}
                 <div className="p-5 space-y-4 text-sm leading-relaxed">
-                  
-                  {/* MTN Specific content */}
+                   {/* MTN Specific content */}
                   {network.slug === "mtn" && (
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
                         <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
                         <span className="font-bold text-foreground text-xs uppercase tracking-wider">MTN Mobile Money</span>
                       </div>
-                      <p className="text-xs text-muted-foreground">
+                      <p className="text-xs text-muted-foreground leading-relaxed">
                         Your payment prompt usually arrives within a few seconds.
                       </p>
-                      <div className="text-xs font-semibold text-foreground">If it doesn't appear immediately:</div>
-                      <ul className="space-y-1.5 text-xs text-muted-foreground">
-                        <li className="flex items-start gap-2">
-                          <span className="text-green-500 font-bold">✓</span> Wait a few more seconds.
+                      <div className="text-xs font-bold text-foreground pt-1">If your payment prompt or OTP is delayed:</div>
+                      <ul className="space-y-2.5 text-xs text-muted-foreground">
+                        <li className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
+                          <span>Wait <strong className="text-foreground whitespace-nowrap">30–60 seconds</strong>.</span>
                         </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-green-500 font-bold">✓</span> If waiting for <strong>30–60 seconds</strong>, tap <strong>Resend</strong> on the Paystack checkout.
+                        <li className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
+                          <span>Tap <strong className="text-foreground">Resend</strong> on the Paystack checkout.</span>
                         </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-green-500 font-bold">✓</span> Select <strong>WhatsApp</strong> to receive your OTP faster.
+                        <li className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
+                          <span>Choose <strong className="text-foreground">WhatsApp</strong> to receive your OTP faster.</span>
                         </li>
                       </ul>
                     </div>
@@ -558,22 +560,25 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
                   {network.slug === "telecel" && (
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
+                        <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                         <span className="font-bold text-foreground text-xs uppercase tracking-wider">Telecel Cash</span>
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        Some Telecel customers are currently experiencing temporary delays in receiving payment OTPs.
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        Some Telecel customers may experience temporary delays receiving their payment OTP.
                       </p>
-                      <div className="text-xs font-semibold text-foreground">If you don't receive your OTP after 30–60 seconds:</div>
-                      <ul className="space-y-1.5 text-xs text-muted-foreground">
-                        <li className="flex items-start gap-2">
-                          <span className="text-green-500 font-bold">✓</span> Wait a little longer.
+                      <div className="text-xs font-bold text-foreground pt-1">If your payment prompt or OTP is delayed:</div>
+                      <ul className="space-y-2.5 text-xs text-muted-foreground">
+                        <li className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
+                          <span>Wait <strong className="text-foreground whitespace-nowrap">30–60 seconds</strong>.</span>
                         </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-green-500 font-bold">✓</span> Tap <strong>Resend</strong> on the Paystack checkout.
+                        <li className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
+                          <span>Tap <strong className="text-foreground">Resend</strong> on the Paystack checkout.</span>
                         </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-green-500 font-bold">✓</span> Select <strong>WhatsApp</strong> to receive your OTP faster.
+                        <li className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
+                          <span>Choose <strong className="text-foreground">WhatsApp</strong> to receive your OTP faster.</span>
                         </li>
                       </ul>
                     </div>
@@ -583,33 +588,36 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
                   {network.slug === "airteltigo" && (
                     <div className="space-y-3">
                       <div className="flex items-center gap-2">
-                        <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
+                        <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
                         <span className="font-bold text-foreground text-xs uppercase tracking-wider">AirtelTigo Money</span>
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        Some AirtelTigo customers are currently experiencing temporary delays in receiving payment OTPs.
+                      <p className="text-xs text-muted-foreground leading-relaxed">
+                        Some AirtelTigo customers may experience temporary delays receiving their payment OTP.
                       </p>
-                      <div className="text-xs font-semibold text-foreground">If you don't receive your OTP after 30–60 seconds:</div>
-                      <ul className="space-y-1.5 text-xs text-muted-foreground">
-                        <li className="flex items-start gap-2">
-                          <span className="text-green-500 font-bold">✓</span> Wait a little longer.
+                      <div className="text-xs font-bold text-foreground pt-1">If your payment prompt or OTP is delayed:</div>
+                      <ul className="space-y-2.5 text-xs text-muted-foreground">
+                        <li className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
+                          <span>Wait <strong className="text-foreground whitespace-nowrap">30–60 seconds</strong>.</span>
                         </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-green-500 font-bold">✓</span> Tap <strong>Resend</strong> on the Paystack checkout.
+                        <li className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
+                          <span>Tap <strong className="text-foreground">Resend</strong> on the Paystack checkout.</span>
                         </li>
-                        <li className="flex items-start gap-2">
-                          <span className="text-green-500 font-bold">✓</span> Choose <strong>WhatsApp</strong> to receive your OTP faster.
+                        <li className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
+                          <span>Choose <strong className="text-foreground">WhatsApp</strong> to receive your OTP faster.</span>
                         </li>
                       </ul>
                     </div>
                   )}
 
                   {/* Footer note */}
-                  <div className="pt-3 border-t border-border/60 text-center">
-                    <p className="text-[10px] text-muted-foreground leading-normal flex items-center justify-center gap-1">
-                      🔒 <strong>Secure payments powered by Paystack</strong>
+                  <div className="pt-3.5 border-t border-border/60 text-center">
+                    <p className="text-[10px] text-muted-foreground leading-normal flex items-center justify-center gap-1 font-semibold">
+                      🔒 Secure payments powered by Paystack
                     </p>
-                    <p className="text-[9px] text-muted-foreground/80 mt-0.5 leading-relaxed">
+                    <p className="text-[9px] text-muted-foreground/80 mt-1 leading-relaxed italic">
                       Your Mobile Money PIN and payment credentials are never stored by DataHubGH.
                     </p>
                   </div>
