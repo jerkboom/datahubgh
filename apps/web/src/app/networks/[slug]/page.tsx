@@ -79,10 +79,19 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
 
   const onSubmit = async (data: CheckoutForm) => {
     if (!selectedBundle) return;
-    const skipModal = localStorage.getItem("skipPrePayModal") === "true";
+    const skipModal = localStorage.getItem("skipPrePayModal") === "true" || localStorage.getItem("dontShowPaymentAdvisory") === "true";
+    
+    console.log("=== PAYMENT DIAGNOSTIC LOGS ===");
+    console.log("Selected network:", network);
+    console.log("Skip modal preference found:", skipModal);
+    console.log("dontShowPaymentAdvisory in localStorage:", localStorage.getItem("dontShowPaymentAdvisory"));
+    console.log("skipPrePayModal in localStorage:", localStorage.getItem("skipPrePayModal"));
+
     if (skipModal) {
+      console.log("Proceeding directly to Paystack payment...");
       await proceedToPayment(data);
     } else {
+      console.log("Showing Pre-Payment Advisory Modal...");
       setCheckoutFormData(data);
       setIsPrePayModalOpen(true);
     }
@@ -621,6 +630,7 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
                     onClick={() => {
                       if (dontShowAgain) {
                         localStorage.setItem("skipPrePayModal", "true");
+                        localStorage.setItem("dontShowPaymentAdvisory", "true");
                       }
                       proceedToPayment(checkoutFormData);
                     }}
