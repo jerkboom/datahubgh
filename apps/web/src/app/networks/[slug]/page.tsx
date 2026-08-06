@@ -39,7 +39,6 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isPrePayModalOpen, setIsPrePayModalOpen] = useState(false);
   const [checkoutFormData, setCheckoutFormData] = useState<CheckoutForm | null>(null);
-  const [dontShowAgain, setDontShowAgain] = useState(false);
 
   const { register, handleSubmit, watch, formState: { errors, isDirty } } = useForm<CheckoutForm>({
     resolver: zodResolver(checkoutSchema),
@@ -79,22 +78,8 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
 
   const onSubmit = async (data: CheckoutForm) => {
     if (!selectedBundle) return;
-    const skipModal = localStorage.getItem("skipPrePayModal") === "true" || localStorage.getItem("dontShowPaymentAdvisory") === "true";
-    
-    console.log("=== PAYMENT DIAGNOSTIC LOGS ===");
-    console.log("Selected network:", network);
-    console.log("Skip modal preference found:", skipModal);
-    console.log("dontShowPaymentAdvisory in localStorage:", localStorage.getItem("dontShowPaymentAdvisory"));
-    console.log("skipPrePayModal in localStorage:", localStorage.getItem("skipPrePayModal"));
-
-    if (skipModal) {
-      console.log("Proceeding directly to Paystack payment...");
-      await proceedToPayment(data);
-    } else {
-      console.log("Showing Pre-Payment Advisory Modal...");
-      setCheckoutFormData(data);
-      setIsPrePayModalOpen(true);
-    }
+    setCheckoutFormData(data);
+    setIsPrePayModalOpen(true);
   };
 
   const proceedToPayment = async (data: CheckoutForm | null) => {
@@ -609,29 +594,12 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
                       Your Mobile Money PIN and payment credentials are never stored by DataHubGH.
                     </p>
                   </div>
-
-                  {/* Don't show again checkbox */}
-                  <label className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-muted/40 cursor-pointer select-none border border-transparent hover:border-border transition-all">
-                    <input 
-                      type="checkbox" 
-                      checked={dontShowAgain}
-                      onChange={(e) => setDontShowAgain(e.target.checked)}
-                      className="w-3.5 h-3.5 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
-                    />
-                    <span className="text-[11px] font-medium text-muted-foreground">
-                      Don't show this again
-                    </span>
-                  </label>
                 </div>
 
                 {/* Footer Buttons */}
                 <div className="p-4 border-t border-border bg-muted/10 flex flex-col gap-2">
                   <Button 
                     onClick={() => {
-                      if (dontShowAgain) {
-                        localStorage.setItem("skipPrePayModal", "true");
-                        localStorage.setItem("dontShowPaymentAdvisory", "true");
-                      }
                       proceedToPayment(checkoutFormData);
                     }}
                     className="w-full h-12 rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all"
