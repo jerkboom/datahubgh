@@ -484,111 +484,139 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-50"
+              className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
               onClick={() => setIsPrePayModalOpen(false)}
               aria-hidden="true"
             />
             
-            <div className="fixed inset-0 z-55 flex items-end sm:items-center justify-center p-0 sm:p-4 pointer-events-none">
+            <div className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none">
               <motion.div 
-                initial={{ opacity: 0, scale: 0.95, y: 50 }}
+                initial={{ opacity: 0, scale: 0.95, y: 20 }}
                 animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 50 }}
-                transition={{ type: "spring", damping: 25, stiffness: 300 }}
-                className="w-full sm:w-[520px] max-h-[90vh] overflow-y-auto bg-card rounded-t-3xl sm:rounded-3xl shadow-2xl pointer-events-auto flex flex-col border border-border"
+                exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                transition={{ type: "spring", damping: 25, stiffness: 350 }}
+                className="w-full max-w-[420px] bg-card rounded-2xl shadow-2xl pointer-events-auto flex flex-col border border-border overflow-hidden"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="prepay-modal-title"
               >
                 {/* Header */}
-                <div className="p-6 border-b border-border flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500">
-                    <Info className="w-5 h-5" />
+                <div className="p-5 border-b border-border flex items-center gap-3 bg-muted/20">
+                  <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold shadow-sm ${network.color}`}>
+                    {network.logo}
                   </div>
                   <div>
-                    <h2 id="prepay-modal-title" className="text-lg font-bold text-foreground">
+                    <h2 id="prepay-modal-title" className="text-base font-bold text-foreground">
                       Before You Continue
                     </h2>
-                    <p className="text-xs text-muted-foreground">Mobile Money network advisory</p>
+                    <p className="text-[11px] text-muted-foreground">Advisory for {network.name} customers</p>
                   </div>
                 </div>
 
                 {/* Content */}
-                <div className="p-6 space-y-5 text-sm">
-                  {/* MTN */}
-                  <div className="p-4 rounded-xl bg-muted/40 border border-border/50">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-green-500 animate-pulse" />
-                      <span className="font-bold text-foreground">MTN Mobile Money</span>
+                <div className="p-5 space-y-4 text-sm leading-relaxed">
+                  
+                  {/* MTN Specific content */}
+                  {network.slug === "mtn" && (
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                        <span className="font-bold text-foreground text-xs uppercase tracking-wider">MTN Mobile Money</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Your payment prompt usually arrives within a few seconds.
+                      </p>
+                      <div className="text-xs font-semibold text-foreground">If it doesn't appear immediately:</div>
+                      <ul className="space-y-1.5 text-xs text-muted-foreground">
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 font-bold">✓</span> Wait a few more seconds.
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 font-bold">✓</span> If waiting for <strong>30–60 seconds</strong>, tap <strong>Resend</strong> on the Paystack checkout.
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 font-bold">✓</span> Select <strong>WhatsApp</strong> to receive your OTP faster.
+                        </li>
+                      </ul>
                     </div>
-                    <ul className="list-disc pl-5 space-y-1 text-xs text-muted-foreground">
-                      <li>Your payment prompt usually arrives within a few seconds.</li>
-                      <li>If it doesn't appear immediately, please wait a moment before trying again.</li>
-                    </ul>
-                  </div>
+                  )}
 
-                  {/* Telecel */}
-                  <div className="p-4 rounded-xl bg-muted/40 border border-border/50">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse" />
-                      <span className="font-bold text-foreground">Telecel Cash</span>
+                  {/* Telecel Specific content */}
+                  {network.slug === "telecel" && (
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
+                        <span className="font-bold text-foreground text-xs uppercase tracking-wider">Telecel Cash</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Some Telecel customers are currently experiencing temporary delays in receiving payment OTPs.
+                      </p>
+                      <div className="text-xs font-semibold text-foreground">If you don't receive your OTP after 30–60 seconds:</div>
+                      <ul className="space-y-1.5 text-xs text-muted-foreground">
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 font-bold">✓</span> Wait a little longer.
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 font-bold">✓</span> Tap <strong>Resend</strong> on the Paystack checkout.
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 font-bold">✓</span> Select <strong>WhatsApp</strong> to receive your OTP faster.
+                        </li>
+                      </ul>
                     </div>
-                    <p className="text-xs text-muted-foreground mb-2 leading-relaxed">
-                      Paystack has informed us that some Telecel customers may experience temporary delays in receiving their payment OTP via SMS.
-                    </p>
-                    <div className="text-xs font-semibold text-foreground mb-1">If your OTP doesn't arrive within 30–60 seconds:</div>
-                    <ul className="list-disc pl-5 space-y-1 text-[11px] text-muted-foreground">
-                      <li>Please wait a little longer.</li>
-                      <li>Tap <strong className="text-foreground">Resend</strong> on the Paystack checkout.</li>
-                      <li>Select <strong className="text-foreground">WhatsApp</strong> to receive your OTP faster.</li>
-                    </ul>
-                  </div>
+                  )}
 
-                  {/* AirtelTigo */}
-                  <div className="p-4 rounded-xl bg-muted/40 border border-border/50">
-                    <div className="flex items-center gap-2 mb-2">
-                      <span className="w-2.5 h-2.5 rounded-full bg-yellow-500 animate-pulse" />
-                      <span className="font-bold text-foreground">AirtelTigo Money</span>
+                  {/* AirtelTigo Specific content */}
+                  {network.slug === "airteltigo" && (
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-2">
+                        <span className="w-2 h-2 rounded-full bg-yellow-500 animate-pulse" />
+                        <span className="font-bold text-foreground text-xs uppercase tracking-wider">AirtelTigo Money</span>
+                      </div>
+                      <p className="text-xs text-muted-foreground">
+                        Some AirtelTigo customers are currently experiencing temporary delays in receiving payment OTPs.
+                      </p>
+                      <div className="text-xs font-semibold text-foreground">If you don't receive your OTP after 30–60 seconds:</div>
+                      <ul className="space-y-1.5 text-xs text-muted-foreground">
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 font-bold">✓</span> Wait a little longer.
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 font-bold">✓</span> Tap <strong>Resend</strong> on the Paystack checkout.
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-500 font-bold">✓</span> Choose <strong>WhatsApp</strong> to receive your OTP faster.
+                        </li>
+                      </ul>
                     </div>
-                    <p className="text-xs text-muted-foreground mb-2 leading-relaxed">
-                      Some AirtelTigo customers may also experience temporary SMS OTP delays.
-                    </p>
-                    <div className="text-xs font-semibold text-foreground mb-1">If your OTP doesn't arrive within 30–60 seconds:</div>
-                    <ul className="list-disc pl-5 space-y-1 text-[11px] text-muted-foreground">
-                      <li>Wait a little longer.</li>
-                      <li>Tap <strong className="text-foreground">Resend</strong> on the Paystack checkout.</li>
-                      <li>Choose <strong className="text-foreground">WhatsApp</strong> to receive your OTP faster.</li>
-                    </ul>
-                  </div>
+                  )}
 
                   {/* Footer note */}
-                  <p className="text-[11px] text-muted-foreground text-center leading-relaxed">
-                    Payments are securely processed by <strong className="text-foreground">Paystack</strong>. We do not store your Mobile Money PIN or payment credentials.
-                  </p>
+                  <div className="pt-3 border-t border-border/60 text-center">
+                    <p className="text-[10px] text-muted-foreground leading-normal flex items-center justify-center gap-1">
+                      🔒 <strong>Secure payments powered by Paystack</strong>
+                    </p>
+                    <p className="text-[9px] text-muted-foreground/80 mt-0.5 leading-relaxed">
+                      Your Mobile Money PIN and payment credentials are never stored by DataHubGH.
+                    </p>
+                  </div>
 
                   {/* Don't show again checkbox */}
-                  <label className="flex items-center gap-3 p-3 rounded-lg hover:bg-muted/30 cursor-pointer select-none border border-transparent hover:border-border transition-all">
+                  <label className="flex items-center gap-2.5 p-2 rounded-lg hover:bg-muted/40 cursor-pointer select-none border border-transparent hover:border-border transition-all">
                     <input 
                       type="checkbox" 
                       checked={dontShowAgain}
                       onChange={(e) => setDontShowAgain(e.target.checked)}
-                      className="w-4 h-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
+                      className="w-3.5 h-3.5 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer"
                     />
-                    <span className="text-xs font-medium text-muted-foreground">
-                      Don't show this message again
+                    <span className="text-[11px] font-medium text-muted-foreground">
+                      Don't show this again
                     </span>
                   </label>
                 </div>
 
                 {/* Footer Buttons */}
-                <div className="p-5 border-t border-border bg-card/50 flex flex-col-reverse sm:flex-row gap-3">
-                  <Button 
-                    variant="outline" 
-                    onClick={() => setIsPrePayModalOpen(false)}
-                    className="flex-1 h-12 rounded-xl text-sm font-semibold"
-                  >
-                    Cancel
-                  </Button>
+                <div className="p-4 border-t border-border bg-muted/10 flex flex-col gap-2">
                   <Button 
                     onClick={() => {
                       if (dontShowAgain) {
@@ -596,9 +624,16 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
                       }
                       proceedToPayment(checkoutFormData);
                     }}
-                    className="flex-1 h-12 rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all"
+                    className="w-full h-12 rounded-xl text-sm font-bold shadow-md hover:shadow-lg transition-all"
                   >
                     Continue to Secure Checkout
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    onClick={() => setIsPrePayModalOpen(false)}
+                    className="w-full h-10 rounded-xl text-xs font-semibold text-muted-foreground hover:text-foreground"
+                  >
+                    Cancel
                   </Button>
                 </div>
               </motion.div>
