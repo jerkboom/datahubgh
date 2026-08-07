@@ -102,7 +102,7 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
   };
 
   const proceedToPayment = async (data: CheckoutForm | null) => {
-    if (!selectedBundle || !data) return;
+    if (!selectedBundle || !data || isProcessing) return;
     setIsPrePayModalOpen(false);
     setIsProcessing(true);
     try {
@@ -626,9 +626,9 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
                 {/* Footer Buttons */}
                 <div className="p-4 border-t border-border bg-muted/10 flex flex-col gap-2">
                   <Button 
-                    disabled={!canConfirmPayment}
+                    disabled={!canConfirmPayment || isProcessing}
                     onClick={() => {
-                      if (canConfirmPayment) {
+                      if (canConfirmPayment && !isProcessing) {
                         proceedToPayment(checkoutFormData);
                       }
                     }}

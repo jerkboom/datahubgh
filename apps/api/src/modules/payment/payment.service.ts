@@ -4,6 +4,7 @@ import { OrdersService } from '../orders/orders.service';
 import { OrderStatus } from '../orders/schemas/order.schema';
 import { PaymentStatus } from '../../core/enums';
 import { normalizePhone } from '../../common/utils/phone.util';
+import { randomUUID } from 'crypto';
 
 @Injectable()
 export class PaymentService {
@@ -13,7 +14,7 @@ export class PaymentService {
   ) {}
 
   async initializePayment(amount: number, customerEmail: string, bundleId: string, recipientPhone: string) {
-    const reference = `ORD-${Date.now()}`;
+    const reference = `ORD-${randomUUID()}`;
     
     // Create an order in DB
     await this.ordersService.createOrder({
@@ -26,10 +27,16 @@ export class PaymentService {
       status: OrderStatus.PENDING,
     });
 
-    return this.paymentProvider.initializePayment(amount, reference, { 
+    const response = await this.paymentProvider.initializePayment(amount, reference, { 
       email: customerEmail,
       metadata: { bundleId, recipientPhone: normalizePhone(recipientPhone || '0000000000') }
     });
+
+    if (!response.success) {
+      throw new BadRequestException(response.message || 'Payment initialization failed');
+    }
+
+    return response;
   }
 
   async verifyTransaction(reference: string) {

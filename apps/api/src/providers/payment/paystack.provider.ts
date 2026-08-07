@@ -43,6 +43,7 @@ export class PaystackProvider implements PaymentProvider {
       );
 
       this.logger.log(`Paystack init took ${Date.now() - startTime}ms for ref ${reference}`);
+      this.logger.log(`Paystack response data for ref ${reference}: ${JSON.stringify(response.data)}`);
       return {
         success: true,
         reference,
