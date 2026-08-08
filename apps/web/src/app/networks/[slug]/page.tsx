@@ -548,6 +548,10 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
                           <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
                           <span>Tap <strong className="text-foreground">Resend</strong> on the Paystack checkout.</span>
                         </li>
+                        <li className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
+                          <span>Choose <strong className="text-foreground">WhatsApp</strong> to receive your OTP faster.</span>
+                        </li>
                       </ul>
                     </div>
                   )}
@@ -572,6 +576,10 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
                           <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
                           <span>Tap <strong className="text-foreground">Resend</strong> on the Paystack checkout.</span>
                         </li>
+                        <li className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
+                          <span>Choose <strong className="text-foreground">WhatsApp</strong> to receive your OTP faster.</span>
+                        </li>
                       </ul>
                     </div>
                   )}
@@ -595,6 +603,10 @@ export default function BundleSelectionAndCheckout({ params }: { params: Promise
                         <li className="flex items-start gap-2 leading-relaxed">
                           <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
                           <span>Tap <strong className="text-foreground">Resend</strong> on the Paystack checkout.</span>
+                        </li>
+                        <li className="flex items-start gap-2 leading-relaxed">
+                          <span className="text-green-500 font-bold select-none mt-0.5">✓</span>
+                          <span>Choose <strong className="text-foreground">WhatsApp</strong> to receive your OTP faster.</span>
                         </li>
                       </ul>
                     </div>
