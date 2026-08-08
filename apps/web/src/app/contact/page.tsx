@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
-  MessageCircle, Mail, Phone, Clock, ChevronDown, CheckCircle2, 
+  Mail, Phone, Clock, ChevronDown, CheckCircle2, 
   Send, ShieldCheck, Zap, PhoneCall
 } from "lucide-react";
 import Link from "next/link";
@@ -92,9 +92,8 @@ export default function ContactPage() {
 
         {/* SUPPORT OPTIONS */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 -mt-16 relative z-20">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
-              { icon: MessageCircle, title: "WhatsApp", desc: "Fastest response time", info: "+233 24 000 0000", color: "text-green-600 bg-green-50" },
               { icon: Mail, title: "Email Support", desc: "For detailed inquiries", info: "support@datahubgh.com", color: "text-blue-600 bg-blue-50" },
               { icon: Phone, title: "Phone Support", desc: "Speak with an agent", info: "+233 30 200 0000", color: "text-purple-600 bg-purple-50" },
               { icon: Clock, title: "Working Hours", desc: "We are always online", info: "24/7 Availability", color: "text-orange-600 bg-orange-50" }
@@ -220,28 +219,13 @@ export default function ContactPage() {
               )}
             </motion.div>
 
-            {/* RIGHT COLUMN (WhatsApp & FAQ) */}
+            {/* RIGHT COLUMN (FAQ) */}
             <motion.div 
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.6 }}
               className="space-y-8"
             >
-              {/* WhatsApp CTA */}
-              <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-3xl p-8 text-white shadow-xl relative overflow-hidden">
-                <div className="absolute right-0 bottom-0 opacity-10 scale-150 translate-x-8 translate-y-8">
-                  <MessageCircle className="w-48 h-48" />
-                </div>
-                <div className="relative z-10">
-                  <h3 className="text-2xl font-extrabold mb-2">Need an instant reply?</h3>
-                  <p className="text-green-50 mb-6">Chat with our support team directly on WhatsApp for real-time assistance.</p>
-                  <Button asChild size="lg" className="w-full sm:w-auto bg-white text-green-700 hover:bg-green-50 font-bold h-14 px-8 rounded-xl">
-                    <a href="https://wa.me/233245726892" target="_blank" rel="noreferrer">
-                      Chat on WhatsApp <MessageCircle className="w-5 h-5 ml-2" />
-                    </a>
-                  </Button>
-                </div>
-              </div>
 
               {/* FAQ */}
               <div className="bg-white rounded-3xl border border-slate-200 p-8 shadow-sm">
@@ -324,7 +308,7 @@ export default function ContactPage() {
                 <PhoneCall className="w-8 h-8" />
               </div>
               <h3 className="font-bold text-slate-900 text-lg">24/7 Support</h3>
-              <p className="text-slate-500 text-sm mt-2">Round the clock human assistance via WhatsApp.</p>
+              <p className="text-slate-500 text-sm mt-2">Round the clock human assistance via email or call.</p>
             </div>
           </div>
         </section>

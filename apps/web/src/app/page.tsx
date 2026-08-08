@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   ArrowRight, Zap, ShieldCheck, Clock, Star, PhoneCall, 
-  CheckCircle2, Activity, MessageCircle, ChevronDown
+  CheckCircle2, Activity, ChevronDown
 } from "lucide-react";
 import Link from "next/link";
 import { Navbar } from "@/components/layout/Navbar";
@@ -246,17 +246,6 @@ export default function LandingPage() {
       </main>
 
       <Footer />
-
-      {/* Floating WhatsApp Support */}
-      <a 
-        href="https://wa.me/233245726892" 
-        target="_blank" 
-        rel="noreferrer"
-        className="fixed bottom-6 right-6 w-14 h-14 bg-green-500 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 transition-transform z-50 text-white hover:bg-green-600"
-        aria-label="Contact Support on WhatsApp"
-      >
-        <MessageCircle className="w-7 h-7" />
-      </a>
     </div>
   );
 }
